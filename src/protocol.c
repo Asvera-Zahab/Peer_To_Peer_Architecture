@@ -63,3 +63,66 @@ uint16_t calculate_checksum(unsigned char *data, int length)
 
     return (uint16_t)(sum & 0xFFFF);
 }
+
+int send_packet(int sockfd, struct sockaddr_in *destination,
+                uint8_t type, uint32_t sender_id,
+                const char *payload) {
+
+    unsigned char packet[MAX_PACKET_SIZE];
+    int payload_length = payload ? strlen(payload) : 0;
+
+    if (payload_length > MAX_PAYLOAD)
+        return -1;
+
+    PacketHeader header = {
+        .version = VERSION,
+        .type = type,
+        .flags = 0,
+        .sender_id = sender_id,
+        .seq_no = 0,
+        .ack_no = 0,
+        .length = payload_length,
+        .checksum = 0
+    };
+
+    encode_header(&header, packet);
+
+    if (payload_length > 0)
+        memcpy(packet + HEADER_SIZE, payload, payload_length);
+
+    header.checksum = calculate_checksum(packet,
+                                         HEADER_SIZE + payload_length);
+
+    encode_header(&header, packet);
+
+    return sendto(sockfd, packet, HEADER_SIZE + payload_length, 0,
+                  (struct sockaddr *)destination,
+                  sizeof(*destination));
+}
+
+int validate_packet(unsigned char *packet, int packet_length,
+                    PacketHeader *header) {
+
+    if (packet_length < HEADER_SIZE)
+        return 0;
+
+    decode_header(packet, header);
+
+    if (header->version != VERSION)
+        return 0;
+
+    if (header->length != packet_length - HEADER_SIZE)
+        return 0;
+
+    uint16_t received_checksum = header->checksum;
+
+    packet[18] = 0;
+    packet[19] = 0;
+
+    uint16_t calculated = calculate_checksum(packet, packet_length);
+
+    if (received_checksum != calculated)
+        return 0;
+
+    return 1;
+}

@@ -2,6 +2,7 @@
 #define PROTOCOL_H
 
 #include <stdint.h>
+#include <netinet/in.h>
 
 #define VERSION 1
 #define MAX_PACKET_SIZE 1472
@@ -19,6 +20,7 @@
 #define CHUNK_ANNOUNCE 9
 #define CHUNK_REQUEST 10
 #define CHUNK_DATA 11
+#define PEER_ANNOUNCE 12
 
 typedef struct
 {
@@ -41,4 +43,10 @@ void decode_header(unsigned char *buffer, PacketHeader *header);
 
 uint16_t calculate_checksum(unsigned char *data, int length);
 
+int send_packet(int sockfd, struct sockaddr_in *destination,
+                uint8_t type, uint32_t sender_id,
+                const char *payload);
+
+int validate_packet(unsigned char *packet, int packet_length,
+                    PacketHeader *header);
 #endif
