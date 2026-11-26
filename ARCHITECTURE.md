@@ -95,6 +95,8 @@ Message types: JOIN, PEER_LIST, LEAVE, HEARTBEAT, CHAT, ACK, FILE_LIST, CHUNK_MA
 
 ## (8) Tech and Folder Structure
 
+Language: C (UDP sockets, pthreads for threads).
+
 ```
 Peer_To_Peer_Architecture/
 |-- README.md
@@ -112,7 +114,7 @@ Peer_To_Peer_Architecture/
 +-- results/
 ```
 
-## (09) Testing Plan
+## (9) Testing Plan
 
 - Run with at least 4 peers.
 - Simulate packet loss, delay and duplicates.
