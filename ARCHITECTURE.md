@@ -52,7 +52,7 @@ Every peer runs the same program with these layers:
 - Sliding window so we don't send one packet at a time.
 
 ### 4.4 Distributed File Storage
-- At least 2 shared files, each >= 2MB, split into fixed-size chunks (e.g. 16 KB).
+- At least 2 shared files, each >= 2MB, split into fixed-size chunks (1024 bytes for now, to be tuned in testing).
 - Each chunk has an index and a SHA-256 hash for integrity checking.
 - Chunks are spread across peers, so no single peer holds a full file.
 - Each chunk is stored on at least 2 peers (replication).
@@ -71,25 +71,13 @@ Every peer runs the same program with these layers:
 - If a peer stops responding during a download, switch to another peer that has the same chunk.
 - Only missing chunks are re-requested.
 
-## (5) Protocol Design (Draft)
+## (5) Protocol Design
 
-The final version will be in docs/PROTOCOL.md.
+Our packets use a fixed 20 byte header followed by the payload. The full message formats, rules and flows are in docs/PROTOCOL.md.
 
-Packet header (fixed size, big-endian):
-- Version (1 byte)
-- Message Type (1 byte)
-- Flags (1 byte)
-- Sender ID (4 bytes)
-- Sequence Number (4 bytes)
-- Payload Length (2 bytes)
-- Checksum (4 bytes)
+Header fields: Version, Type, Flags, Sender ID, Sequence Number, Ack Number, Length, Checksum.
 
 Message types: JOIN, PEER_LIST, LEAVE, HEARTBEAT, CHAT, ACK, FILE_LIST, CHUNK_MAP, CHUNK_ANNOUNCE, CHUNK_REQUEST, CHUNK_DATA
-
-Example flows:
-- Join: JOIN -> PEER_LIST -> FILE_LIST / CHUNK_MAP -> CHUNK_REQUEST / CHUNK_DATA -> CHUNK_ANNOUNCE
-- Chat: CHAT (seq = n) -> ACK (n), retransmit if no ACK
-- Download: CHUNK_REQUEST -> CHUNK_DATA -> ACK, repeated for all chunks
 
 ## (6) Data Each Peer Keeps
 
