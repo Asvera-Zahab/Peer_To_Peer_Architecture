@@ -1,4 +1,3 @@
-
 #ifndef MEMBERSHIP_H
 #define MEMBERSHIP_H
 

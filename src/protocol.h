@@ -49,4 +49,5 @@ int send_packet(int sockfd, struct sockaddr_in *destination,
 
 int validate_packet(unsigned char *packet, int packet_length,
                     PacketHeader *header);
+                    
 #endif
