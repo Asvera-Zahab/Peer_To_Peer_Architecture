@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <arpa/inet.h>
-
 #include "protocol.h"
 
 void encode_header(PacketHeader *h, unsigned char *buffer)

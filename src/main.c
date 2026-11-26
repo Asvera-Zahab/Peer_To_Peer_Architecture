@@ -153,6 +153,7 @@ int main(int argc, char *argv[]) {
             membership_chat(input);
         }
     }
+
     running = 0;
 
     close(sockfd);
