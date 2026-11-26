@@ -115,12 +115,12 @@ Peer_To_Peer_Architecture/
 |-- ARCHITECTURE.md
 |-- docs/PROTOCOL.md
 |-- src/
-|   |-- main.py
-|   |-- protocol.py
-|   |-- reliability.py
-|   |-- membership.py
-|   |-- chat.py
-|   +-- files.py
+|   |-- main.c
+|   |-- protocol.c
+|   |-- reliability.c
+|   |-- membership.c
+|   |-- chat.c
+|   +-- files.c
 |-- shared_files/
 |-- tests/
 +-- results/
