@@ -107,8 +107,6 @@ Example flows:
 
 ## (8) Tech and Folder Structure
 
-Language: Python (socket, threading, struct, hashlib).
-
 ```
 Peer_To_Peer_Architecture/
 |-- README.md
